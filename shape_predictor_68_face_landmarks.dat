@@ -1,0 +1,28 @@
+import dlib
+import cv2
+
+# Load the pre-trained face detector and landmark predictor
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
+# Load an image
+image = cv2.imread('your_image.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Detect faces in the image
+faces = detector(gray)
+
+for face in faces:
+    # Get the landmarks
+    landmarks = predictor(gray, face)
+    
+    # Draw landmarks on the image
+    for i in range(68):
+        x = landmarks.part(i).x
+        y = landmarks.part(i).y
+        cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
+
+# Display the image
+cv2.imshow('Landmarks', image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
